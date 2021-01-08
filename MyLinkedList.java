@@ -50,6 +50,48 @@ public class MyLinkedList{
     return true;
   }
 
+  public String remove(int index) {
+    if (index < 0 || index >= size()) {
+      throw new IndexOutOfBoundsException("Index not in range 0 to " + size());
+    }
+
+    Node current = getNode(index);
+    Node prev = current.getPrev() != null ? current.getPrev() : null;
+    Node next = current.getNext();
+
+    if(size() == 0) {
+      return "";
+    } else if(size() == 1) {
+      start = null;
+      end = null;
+    } else if(index == 0) {
+      next.setPrev(null);
+      current.setNext(null);
+      start = next;
+    } else if (index == size()-1) {
+      prev.setNext(null);
+      current.setPrev(null);
+      end = prev;
+    } else {
+      prev.setNext(next);
+      next.setPrev(prev);
+      current.setNext(null);
+      current.setPrev(null);
+    }
+    size--;
+    return current.getData();
+  }
+
+  public void extend(MyLinkedList other) {
+    end.setNext(other.start);
+    other.start.setPrev(end);
+    end = other.end;
+    other.start = null;
+    other.end = null;
+    size += other.size();
+    other.size = 0;
+  }
+
   public String get(int index) {
     return getNode(index).getData();
   }
@@ -90,7 +132,7 @@ public class MyLinkedList{
   private Node getNode(int index) {
     int i = 0;
     Node current = start;
-    while(i < index) {
+    while(i < index && current != null) {
       current = current.getNext();
       i++;
     }
