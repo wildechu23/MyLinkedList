@@ -83,13 +83,17 @@ public class MyLinkedList{
   }
 
   public void extend(MyLinkedList other) {
-    end.setNext(other.start);
-    other.start.setPrev(end);
-    end = other.end;
-    other.start = null;
-    other.end = null;
-    size += other.size();
-    other.size = 0;
+    if(other.size() == 0) {
+      return;
+    } else {
+      end.setNext(other.start);
+      other.start.setPrev(end);
+      end = other.end;
+      other.start = null;
+      other.end = null;
+      size += other.size();
+      other.size = 0;
+    }
   }
 
   public String get(int index) {
